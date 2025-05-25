@@ -22,17 +22,20 @@ var (
 
 // Config holds configuration settings for the REST server.
 type Config struct {
-	Server         string
-	IsDev          bool
-	JwtSecret      string
 	ServiceName    string
 	ServiceVersion string
+	Address        string
+	IsDev          bool
+	AppName        string
+	JwtSecret      string
 }
 
 // NewServer initializes a new Echo server with middleware and routes.
-func NewServer(config *Config, registerRoutes func(e *echo.Echo)) {
-	Server = echo.New()
+func NewServer(config *Config, logger *zap.Logger, registerRoutes func(e *echo.Echo)) {
 	RestConfig = config
+	Logger = logger
+
+	Server = echo.New()
 
 	// Basic server configuration
 	Server.Debug = config.IsDev
@@ -51,7 +54,7 @@ func NewServer(config *Config, registerRoutes func(e *echo.Echo)) {
 	Server.Use(middleware.BodyDump(RequestFailureDumper))
 
 	// Custom route registration
-	registerRoutes(Server)
+	// registerRoutes(Server)
 
 	// Health check endpoint
 	Server.GET("/health", handlerHealth)
@@ -66,8 +69,8 @@ func NewServer(config *Config, registerRoutes func(e *echo.Echo)) {
 
 // Start runs the Echo server.
 func Start() error {
-	Logger.Info(fmt.Sprintf("Starting Rest Server: %s", RestConfig.Server))
-	return Server.Start(RestConfig.Server)
+	Logger.Info(fmt.Sprintf("Starting Rest Server: %s", RestConfig.Address))
+	return Server.Start(RestConfig.Address)
 }
 
 // Shutdown gracefully shuts down the server.
