@@ -4,12 +4,13 @@ package redis
 import (
 	"fmt"
 
-	"github.com/enigma-id/engine"
 	"github.com/gomodule/redigo/redis"
+	"go.uber.org/zap"
 )
 
 // Cache is the global Redis instance.
 var Cache *Redis
+var Logger *zap.Logger
 
 // Config contains Redis connection settings.
 type Config struct {
@@ -37,6 +38,6 @@ func NewConnection(cfg *Config) error {
 		return fmt.Errorf("redis ping failed: %w", err)
 	}
 
-	engine.Logger.Info(fmt.Sprintf("Connected to Redis Server: %s@%s", cfg.Server, cfg.Name))
+	Logger.Info(fmt.Sprintf("Connected to Redis Server: %s@%s", cfg.Server, cfg.Name))
 	return nil
 }

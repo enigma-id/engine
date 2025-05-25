@@ -9,7 +9,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/enigma-id/engine"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"go.uber.org/zap"
@@ -23,9 +22,11 @@ var (
 
 // Config holds configuration settings for the REST server.
 type Config struct {
-	Server    string
-	IsDev     bool
-	JwtSecret string
+	Server         string
+	IsDev          bool
+	JwtSecret      string
+	ServiceName    string
+	ServiceVersion string
 }
 
 // NewServer initializes a new Echo server with middleware and routes.
@@ -97,8 +98,8 @@ func logRoutes(e *echo.Echo) {
 // handlerHealth responds with basic health check info.
 func handlerHealth(c echo.Context) error {
 	return c.JSON(http.StatusOK, echo.Map{
-		"service": engine.ServiceConfig.Name,
-		"version": engine.ServiceConfig.Version,
+		"service": RestConfig.ServiceName,
+		"version": RestConfig.ServiceVersion,
 		"host":    os.Getenv("DAP_AGENT"),
 		"time":    time.Now(),
 	})
