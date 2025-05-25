@@ -41,8 +41,8 @@ func NewServer(config *Config, logger *zap.Logger, registerRoutes func(e *echo.E
 	Server.Debug = config.IsDev
 	Server.HidePort = true
 	Server.HideBanner = true
-	// Server.Binder = &CustomBinder{}
-	// Server.HTTPErrorHandler = CustomHTTPErrorHandler
+	Server.Binder = &CustomBinder{}
+	Server.HTTPErrorHandler = CustomHTTPErrorHandler
 
 	// Middleware stack
 	Server.Use(HTTPLogger())
@@ -54,7 +54,7 @@ func NewServer(config *Config, logger *zap.Logger, registerRoutes func(e *echo.E
 	Server.Use(middleware.BodyDump(RequestFailureDumper))
 
 	// Custom route registration
-	// registerRoutes(Server)
+	registerRoutes(Server)
 
 	// Health check endpoint
 	Server.GET("/health", handlerHealth)
