@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/enigma-id/engine"
 	"github.com/labstack/echo/v4"
 	"go.uber.org/zap"
 )
@@ -42,5 +41,5 @@ func RequestFailureDumper(c echo.Context, reqBody, resBody []byte) {
 	}
 
 	// Log with structured context
-	engine.Logger.Warn("HTTP request failed", fields...)
+	Logger.Warn("HTTP request failed", fields...)
 }

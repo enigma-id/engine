@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/enigma-id/engine"
 	"github.com/labstack/echo/v4"
 	"go.uber.org/zap"
 )
@@ -44,9 +43,9 @@ func logRequest(hand echo.HandlerFunc, c echo.Context) (err error) {
 	}
 
 	if err == nil {
-		engine.Logger.Info(fmt.Sprintf("%s/%d", req.Method, res.Status), fields...)
+		Logger.Info(fmt.Sprintf("%s/%d", req.Method, res.Status), fields...)
 	} else {
-		engine.Logger.Warn(fmt.Sprintf("%s/%d", req.Method, res.Status), fields...)
+		Logger.Warn(fmt.Sprintf("%s/%d", req.Method, res.Status), fields...)
 	}
 
 	return

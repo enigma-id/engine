@@ -12,11 +12,13 @@ import (
 	"github.com/enigma-id/engine"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"go.uber.org/zap"
 )
 
 var (
 	Server     *echo.Echo // Global Echo server instance
 	RestConfig *Config    // Configuration for REST server
+	Logger     *zap.Logger
 )
 
 // Config holds configuration settings for the REST server.
@@ -63,7 +65,7 @@ func NewServer(config *Config, registerRoutes func(e *echo.Echo)) {
 
 // Start runs the Echo server.
 func Start() error {
-	engine.Logger.Info(fmt.Sprintf("Starting Rest Server: %s", RestConfig.Server))
+	Logger.Info(fmt.Sprintf("Starting Rest Server: %s", RestConfig.Server))
 	return Server.Start(RestConfig.Server)
 }
 
